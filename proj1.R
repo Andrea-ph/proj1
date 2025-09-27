@@ -10,10 +10,9 @@
 #setwd("/Users/apple/Desktop") ## comment out of submitted
 a <- scan("shakespeare.txt",what="character",skip=83,nlines=196043-83,
           fileEncoding="UTF-8")
-cat("token_numbers:", length(a), "\n")
+cat("token numbers:", length(a), "\n")
 
 # Pre-processing
-
 ## (a) To remove the stage directions
 left_brackets <- grep("\\[", a)
 cat("token numbers including '[':", length(left_brackets), "\n")
@@ -83,7 +82,7 @@ a <- split_punct(a)
 cat("Step 4d:  token  =", length(a))
 
 
-# (f) convert the cleaned word vector a to lower case
+## (f) convert the cleaned word vector a to lower case
 a <- tolower(a)
 cat("Step 4e: head 20 words =", head(a, 20), "\n")
 
@@ -203,7 +202,8 @@ simulate_sentence <- function(M, M1, b, start_word, max_len=100, debug=FALSE) {
   return(paste(b[sentence], collapse=" "))
 }
 
-# generate a sentence
+# Generate a sentence
 cat("Step 9: simulate from the model →\n")
 cat(simulate_sentence(M, tokens, common, start_word=start_word, debug=TRUE), "\n")
+
 
