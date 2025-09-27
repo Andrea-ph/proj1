@@ -6,7 +6,8 @@
 # Name1: xx% 
 # Name2: xx% 
 # Name3: xx% 
-##############################################
+#############################
+#############################
 #setwd("/Users/apple/Desktop") ## comment out of submitted
 a <- scan("shakespeare.txt",what="character",skip=83,nlines=196043-83,
           fileEncoding="UTF-8")
@@ -104,7 +105,7 @@ top_1000_indices <- order(word_counts, decreasing = TRUE)[1:1000]
 b <- b[top_1000_indices]
 print(b)
 
-# To make the matrices of common word token sequences
+#Step6 To make the matrices of common word token sequences
 ## (a) If a word is not in b, then match gives an NA for that word.
 M1 <- match(a, b)
 length(M1)
@@ -126,7 +127,7 @@ print(M[1:10,])
 M <- M[!is.na(M[, mlag + 1]), , drop = FALSE]
 dim(M)
 
-# 7. Write a function
+#Step7 Write a function
 ##
 next.word <- function(key, M, M1, w = rep(1, ncol(M) - 1)) {
   m <- ncol(M) - 1     # 
@@ -168,21 +169,17 @@ next.word <- function(key, M, M1, w = rep(1, ncol(M) - 1)) {
   return(alternative[select_position])
 }
 
-##############################################
-# 8. select a single word token at random
-##############################################
+#Step 8 select a single word token at random
 punct_chars <- c(",", ".", ";", "!", ":", "?")
 
 non_punct_indices <- which(!(common %in% punct_chars))
 
-# select a start word at random
+## select a start word at random
 start_token <- sample(non_punct_indices, 1)
 start_word <- common[start_token]
 cat("Step 8: select a start word at random =", start_word, "\n")
 
-##############################################
-# 9. simulate a sentence
-##############################################
+#Step 9 simulate a sentence
 simulate_sentence <- function(M, M1, b, start_word, max_len=100, debug=FALSE) {
   start_token <- match(start_word, b)
   if (is.na(start_token)) {
@@ -205,5 +202,6 @@ simulate_sentence <- function(M, M1, b, start_word, max_len=100, debug=FALSE) {
 # Generate a sentence
 cat("Step 9: simulate from the model →\n")
 cat(simulate_sentence(M, tokens, common, start_word=start_word, debug=TRUE), "\n")
+
 
 
