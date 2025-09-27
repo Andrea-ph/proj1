@@ -1,4 +1,4 @@
-#proj1
+#proj1 - Extended Statistical Programming - Group 33
 # Group members:
 # Shuo Li (s2795688), Zhe Zhu (s2841606), Antrea Filippou (s2766374)
 #
@@ -202,6 +202,7 @@ simulate_sentence <- function(M, M1, b, start_word, max_len=100, debug=FALSE) {
 # Generate a sentence
 cat("Step 9: simulate from the model →\n")
 cat(simulate_sentence(M, tokens, common, start_word=start_word, debug=TRUE), "\n")
+
 
 
 
