@@ -80,9 +80,8 @@ split_punct <- function(words,
 }
 
 ## (e) To separate the punctuation marks）
-a <- split_punct(a)
-cat("Step 4d:  token  =", length(a))
-
+a <- split_punct(a) #Implement the tokenization process: separate punctuation from words to ensure symbols (e.g., ".", ",", "!") are regarded as distinct tokens. 
+cat("Step 4d:  token  =", length(a)) # diagnostic validation of the token count following punctuation separation
 
 ## (f) convert the cleaned word vector a to lower case
 a <- tolower(a)
@@ -203,6 +202,7 @@ simulate_sentence <- function(M, M1, b, start_word, max_len=100, debug=FALSE) {
 ######## Generate a sentence ############################################
 cat("Step 9: simulate from the model →\n")
 cat(simulate_sentence(M, tokens, common, start_word=start_word, debug=TRUE), "\n")
+
 
 
 
