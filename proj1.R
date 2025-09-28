@@ -1,53 +1,54 @@
-#proj1 - Extended Statistical Programming - Group 33
-# Group members:
-# Shuo Li (s2795688), Zhe Zhu (s2841606), Antrea Filippou (s2766374)
-#
-# Contributions:
-# Name1: xx% 
-# Name2: xx% 
-# Name3: xx% 
-#############################
-#############################
-#setwd("/Users/apple/Desktop") ## comment out of submitted
+###########################################################
+####proj1 - Group 33 - Extended Statistical Programming ###
+#### Group members as below ################################
+#### Shuo Li (s2795688), Zhe Zhu (s2841606), Antrea Filippou (s2766374)
+#### Contributions as below ################################
+#### Shuo Li: xx (xx%) ###
+#### Zhe Zhu: xx (xx%) ###
+#### Antrea Filippou: xx (xx%) ###
+############################################################
+
+# setwd("/Users/apple/Desktop") # comment out of submitted
 a <- scan("shakespeare.txt",what="character",skip=83,nlines=196043-83,
           fileEncoding="UTF-8")
 cat("token numbers:", length(a), "\n")
 
-# Pre-processing
-## (a) To remove the stage directions
-left_brackets <- grep("\\[", a)
+########## Step 4 Pre-processing #############################
+## (a) To remove the stage directions within "[]"
+### Note: some unmatched brackets exist
+left_brackets <- grep("\\[", a) # Find the position of the token containing the left bracket "["
 cat("token numbers including '[':", length(left_brackets), "\n")
-right_brackets <- grep("\\]", a)
+right_brackets <- grep("\\]", a) # Find the position of the token containing the right bracket "]"
 cat("token numbers including ']':", length(right_brackets), "\n")
 
-to_remove <- integer(0)
+to_remove <- integer(0) # The token index that needs to be removed
 
 for (i in left_brackets) {
   end <- min(i+100, length(a))
-  close_brackets <- grep("\\]", a[(i+1):end])
+  close_brackets <- grep("\\]", a[(i+1):end]) # Search for the first token with ']' in the range from i+1 to end
   
   if (length(close_brackets)>0) {
-    j <- i + close_brackets[1] 
+    j <- i + close_brackets[1] # Find the index of the first right bracket ']'
     to_remove <- c(to_remove, i:j)
   } else {
-    to_remove <- c(to_remove, i) 
+    to_remove <- c(to_remove, i) # If the right bracket cannot be found, at least delete the '[' itself
   }
 }
 
 to_remove <- sort(unique(to_remove)) 
 cat("token to delete:", length(to_remove), "\n")
 
-a <- a[-to_remove]
-cat("token numbers after deletion:", length(a), "\n")
+a <- a[-to_remove] # Remove the content of the close brackets
+cat("token numbers after removing stage directions:", length(a), "\n")
 
 cat(" remaining number of tokens including'[':", sum(grepl("\\[", a)), "\n")
 cat("remaining number of tokens including ']':", sum(grepl("\\]", a)), "\n")
 
 ## (b) To remove fully upper case and Arabic numerals
-fully_uppercase <- a[(a == toupper(a) & !(a %in% c("I", "A")))]
-head(fully_uppercase)
-a <- a[! a %in% fully_uppercase]
-cat("After removing uppercase and numbers, the remaining tokens:", length(a), "\n" )
+fully_uppercase <- a[(a == toupper(a) & !(a %in% c("I", "A")))] # Compare a with toupper(a) to find words that are fully upper case, ie. character names
+head(fully_uppercase)                                           # and "I", "A"  are exceptions.
+a <- a[! a %in% fully_uppercase] # Arabic numerals will also be removed
+cat("After removing uppercase and numbers, number of remaining tokens:", length(a), "\n" )
 
 ## (c) To remove “_” and “-”
 a <- gsub("_|-", "", a)
@@ -87,7 +88,7 @@ cat("Step 4d:  token  =", length(a))
 a <- tolower(a)
 cat("Step 4e: head 20 words =", head(a, 20), "\n")
 
-#Step5
+############### Step 5 ########################################
 ## (a) To find the vector of unique words in the cleaned text a.
 b <- unique(a)
 length(b) 
@@ -105,7 +106,7 @@ top_1000_indices <- order(word_counts, decreasing = TRUE)[1:1000]
 b <- b[top_1000_indices]
 print(b)
 
-#Step6 To make the matrices of common word token sequences
+###### Step 6 To make the matrices of common word token sequences ###
 ## (a) If a word is not in b, then match gives an NA for that word.
 M1 <- match(a, b)
 length(M1)
@@ -127,7 +128,7 @@ print(M[1:10,])
 M <- M[!is.na(M[, mlag + 1]), , drop = FALSE]
 dim(M)
 
-#Step7 Write a function
+######## Step 7 Write a function ############################
 ##
 next.word <- function(key, M, M1, w = rep(1, ncol(M) - 1)) {
   m <- ncol(M) - 1     # 
@@ -169,7 +170,7 @@ next.word <- function(key, M, M1, w = rep(1, ncol(M) - 1)) {
   return(alternative[select_position])
 }
 
-#Step 8 select a single word token at random
+######## Step 8 select a single word token at random #################
 punct_chars <- c(",", ".", ";", "!", ":", "?")
 
 non_punct_indices <- which(!(common %in% punct_chars))
@@ -179,7 +180,7 @@ start_token <- sample(non_punct_indices, 1)
 start_word <- common[start_token]
 cat("Step 8: select a start word at random =", start_word, "\n")
 
-#Step 9 simulate a sentence
+######## Step 9 simulate a sentence ####################################
 simulate_sentence <- function(M, M1, b, start_word, max_len=100, debug=FALSE) {
   start_token <- match(start_word, b)
   if (is.na(start_token)) {
@@ -199,9 +200,10 @@ simulate_sentence <- function(M, M1, b, start_word, max_len=100, debug=FALSE) {
   return(paste(b[sentence], collapse=" "))
 }
 
-# Generate a sentence
+######## Generate a sentence ############################################
 cat("Step 9: simulate from the model →\n")
 cat(simulate_sentence(M, tokens, common, start_word=start_word, debug=TRUE), "\n")
+
 
 
 
