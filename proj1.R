@@ -80,36 +80,38 @@ split_punct <- function(words,
 }
 
 ## (e) To separate the punctuation marks）
-a <- split_punct(a) #Implement the tokenization process: separate punctuation from words to ensure symbols (e.g., ".", ",", "!") are regarded as distinct tokens. 
-cat("Step 4d:  token  =", length(a)) # diagnostic validation of the token count following punctuation separation
+a <- split_punct(a)                  ##Implement the tokenization process: separate punctuation from words to ensure symbols (e.g., ".", ",", "!") are regarded as distinct tokens. 
+cat("Step 4d:  token  =", length(a)) ##Diagnostic validation of the token count following punctuation separation
 
 ## (f) convert the cleaned word vector a to lower case
-a <- tolower(a) #All tokens are converted to lowercase so that the Markov model processes the text in a case-insensitive manner and treats semantically identical forms (e.g. "Romeo" and "romeo") as a single token.
-cat("Step 4e: head 20 words =", head(a, 20), "\n") #The command prints the first 20 tokens to the Console after conversion to lowercase, acting as a diagnostic check to verify correct normalization before starting Step 5.
+a <- tolower(a)                                    ##All tokens are converted to lowercase so that the Markov model processes the text in a case-insensitive manner and treats semantically identical forms (e.g. "Romeo" and "romeo") as a single token.
+cat("Step 4e: head 20 words =", head(a, 20), "\n") ##The command prints the first 20 tokens to the Console after conversion to lowercase, acting as a diagnostic check to verify correct normalization before starting Step 5.
 
 ############### Step 5 ########################################
 ## (a) To find the vector of unique words in the cleaned text a.
-b <- unique(a) ##The vocabulary of the text is defined by extracting the vector of unique tokens via the unique() function
-length(b) ##The number of unique tokens is determined by the length(b) command, which gives a numerical indication of the size of the vocabulary that will  be used in subsequent analysis.
+b <- unique(a)                   ##The vocabulary of the text is defined by extracting the vector of unique tokens via the unique() function
+length(b)                        ##The number of unique tokens is determined by the length(b) command, which gives a numerical indication of the size of the vocabulary that will  be used in subsequent analysis.
 
 ## (b) To find the vector of indices indicating which element in the unique word vector each element in the text corresponds to
-indices <- match(a, b) ##generates a numerical representation of the text by matching each token to its location in the vocabulary b. Crucial first step in developing the Markov model.    
+indices <- match(a, b)           ##Generates a numerical representation of the text by matching each token to its location in the vocabulary b. Crucial first step in developing the Markov model.    
 indices       
 
 ## (c) To count up how many times each unique word occurs in the text
-word_counts <- tabulate(indices)   
-word_counts
+word_counts <- tabulate(indices) ## The tabulate(indices) command calculates the frequency distribution of the vocabulary,counting how many times each unique token appears in the text.The result is stored in the vector word_counts, which is the empirical basis for identifying the most common tokens. 
+word_counts                      ##Printing word_counts provides an immediate visualization of the distribution and acts as a diagnostic check before moving on to the next step.
 
 ## (d) To find top 1000 common words
-top_1000_indices <- order(word_counts, decreasing = TRUE)[1:1000]
-b <- b[top_1000_indices]
-print(b)
+top_1000_indices <- order(word_counts, decreasing = TRUE)[1:1000]## Identifies the indices of the 1000 most frequent tokens by sorting the frequencies in descending order.
+b <- b[top_1000_indices]                                         ## Keeps only the 1000 most common tokens, defining the basic vocabulary for the Markov model.
+print(b)                                                         ## Displays the final set of most frequent tokens.
 
 ###### Step 6 To make the matrices of common word token sequences ###
 ## (a) If a word is not in b, then match gives an NA for that word.
-M1 <- match(a, b)
-length(M1)
-head(M1, 100)
+M1 <- match(a, b)   ## Each token of the text is mapped to its position in the vocabulary b.
+                    ##Tokens that are not in the vocabulary (except top-1000) are given the value NA.
+                    ## This creates a numeric vector that represents the entire text.
+length(M1)          ##Checks that the length of vector M1 equals the number of tokens in the text.
+head(M1, 100)       ##Preview the first 100 elements to see if the mapping was done correctly (indicators + NA).
 
 ## (b) Create an (n - mlag) × (mlag + 1) matrix, M
 ### Firstly, we use mlag equals to 4.
@@ -202,6 +204,7 @@ simulate_sentence <- function(M, M1, b, start_word, max_len=100, debug=FALSE) {
 ######## Generate a sentence ############################################
 cat("Step 9: simulate from the model →\n")
 cat(simulate_sentence(M, tokens, common, start_word=start_word, debug=TRUE), "\n")
+
 
 
 
