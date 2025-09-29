@@ -115,43 +115,43 @@ head(M1, 100)       ##Preview the first 100 elements to see if the mapping was d
 
 ## (b) Create an (n - mlag) × (mlag + 1) matrix, M
 ### Firstly, we use mlag equals to 4.
-mlag <- 4
-n <- length(M1)
-print(n)
-nrows <- n - mlag
+mlag <- 4         ##The maximum history is set to 4 tokens.
+n <- length(M1)   ##Total number of tokens in the text.
+print(n)          ##Display the number of tokens for verification.
+nrows <- n - mlag ##Calculating the number of lines for sequences of length mlag+1
 
-M <- matrix(NA, nrow = nrows, ncol = mlag + 1)
+M <- matrix(NA, nrow = nrows, ncol = mlag + 1)  ##Initialize a matrix with dimensions (n ​​- mlag) × (mlag + 1).
 for (j in 1:(mlag + 1)) {
-  M[, j] <- M1[j:(j + nrows - 1)]
+  M[, j] <- M1[j:(j + nrows - 1)]              ##Each column corresponds to a shifted version of M1.Each line contains a sequence of mlag+1 tokens.
 }
-print(M[1:10,])
+print(M[1:10,])                                ##Display the first 10 lines for review
 
-M <- M[!is.na(M[, mlag + 1]), , drop = FALSE]
-dim(M)
+M <- M[!is.na(M[, mlag + 1]), , drop = FALSE]  ## Remove lines with NA in the last token
+dim(M)                                         ## Returns the final dimensions of the matrix.
 
 ######## Step 7 Write a function ############################
 ##
 next.word <- function(key, M, M1, w = rep(1, ncol(M) - 1)) {
-  m <- ncol(M) - 1     # 
+  m <- ncol(M) - 1                         ## Defines the maximum Markov order from the structure of M.
   
-  if (length(key) > m) key <- tail(key, m)
+  if (length(key) > m) key <- tail(key, m) ##Limits the context to the last m tokens if it is larger.
   
-  alternative <- integer(0)
-  prob <- numeric(0)
+  alternative <- integer(0)               ##Gathers the candidate "next" tokens.
+  prob <- numeric(0)                      ##And the corresponding sampling weights from the mixture.
   
-  L <- length(key)
+  L <- length(key)                        ##Current length of the available context.
   
   for (s in seq_len(L)) {
-    sub <- key[s:L]        
+    sub <- key[s:L]                      ##Defines the subsequence (context) that will be compared to the columns of matrix M.
     r <- length(sub)
-    mc <- m - r + 1           
+    mc <- m - r + 1                      ##Calculates the starting column in M ​​so that the sub is correctly aligned with the last r columns.
     
     ii <- colSums(!(t(M[, mc:m, drop = FALSE]) == sub))
     match <- which(ii == 0 & is.finite(ii))
     
     if (length(match) > 0) {
       u <- M[match, m + 1]
-      u <- u[!is.na(u)]
+      u <- u[!is.na(u)]   ### Filters out any NA
       nu <- length(u)
       if (nu > 0) {
         weight <- w[mc]            
@@ -204,6 +204,7 @@ simulate_sentence <- function(M, M1, b, start_word, max_len=100, debug=FALSE) {
 ######## Generate a sentence ############################################
 cat("Step 9: simulate from the model →\n")
 cat(simulate_sentence(M, tokens, common, start_word=start_word, debug=TRUE), "\n")
+
 
 
 
