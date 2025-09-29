@@ -89,11 +89,11 @@ cat("Step 4e: head 20 words =", head(a, 20), "\n") #The command prints the first
 
 ############### Step 5 ########################################
 ## (a) To find the vector of unique words in the cleaned text a.
-b <- unique(a)
-length(b) 
+b <- unique(a) ##The vocabulary of the text is defined by extracting the vector of unique tokens via the unique() function
+length(b) ##The number of unique tokens is determined by the length(b) command, which gives a numerical indication of the size of the vocabulary that will  be used in subsequent analysis.
 
 ## (b) To find the vector of indices indicating which element in the unique word vector each element in the text corresponds to
-indices <- match(a, b)     
+indices <- match(a, b) ##generates a numerical representation of the text by matching each token to its location in the vocabulary b. Crucial first step in developing the Markov model.    
 indices       
 
 ## (c) To count up how many times each unique word occurs in the text
@@ -202,6 +202,7 @@ simulate_sentence <- function(M, M1, b, start_word, max_len=100, debug=FALSE) {
 ######## Generate a sentence ############################################
 cat("Step 9: simulate from the model →\n")
 cat(simulate_sentence(M, tokens, common, start_word=start_word, debug=TRUE), "\n")
+
 
 
 
