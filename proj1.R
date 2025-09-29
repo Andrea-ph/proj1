@@ -84,8 +84,8 @@ a <- split_punct(a) #Implement the tokenization process: separate punctuation fr
 cat("Step 4d:  token  =", length(a)) # diagnostic validation of the token count following punctuation separation
 
 ## (f) convert the cleaned word vector a to lower case
-a <- tolower(a)
-cat("Step 4e: head 20 words =", head(a, 20), "\n")
+a <- tolower(a) #All tokens are converted to lowercase so that the Markov model processes the text in a case-insensitive manner and treats semantically identical forms (e.g. "Romeo" and "romeo") as a single token.
+cat("Step 4e: head 20 words =", head(a, 20), "\n") #The command prints the first 20 tokens to the Console after conversion to lowercase, acting as a diagnostic check to verify correct normalization before starting Step 5.
 
 ############### Step 5 ########################################
 ## (a) To find the vector of unique words in the cleaned text a.
@@ -202,6 +202,7 @@ simulate_sentence <- function(M, M1, b, start_word, max_len=100, debug=FALSE) {
 ######## Generate a sentence ############################################
 cat("Step 9: simulate from the model →\n")
 cat(simulate_sentence(M, tokens, common, start_word=start_word, debug=TRUE), "\n")
+
 
 
 
