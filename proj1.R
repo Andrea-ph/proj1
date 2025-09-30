@@ -247,7 +247,7 @@ simulate_sentence <- function(M, M1, b, start_word,
       words <- words[1:last_punct]
       words[length(words)] <- "."  # Replace last punctuation with "."
     } else {
-      words <- c(words, ".")       # Append "." if no punctuation exists
+      words <- c(words, ".")       # Append "." if no punctuation exists when the sentence produced is too long.
     }
   } else {
     # If multiple ".", cut at the last one
@@ -287,8 +287,9 @@ run_models <- function(M1, b, start_word, m_values=c(3,4,5)) {
   }
 }
 
-# Run the model for m = 3, 4, 5
+# Run the model for m = 3, 4, 5 respectively
 run_models(M1, b, start_word, m_values=c(3,4,5))
+
 
 
 
