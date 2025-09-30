@@ -1,12 +1,12 @@
-##########################################################################
-####proj1 - Group 33 - Extended Statistical Programming ##################
-#### Group members as below ##############################################
-#### Shuo Li (s2795688), Zhe Zhu (s2841606), Antrea Filippou (s2766374) ##
-#### Contributions as below ##############################################
+##############################################################################################
+#### proj1 - Group 33 - Extended Statistical Programming #####################################
+#### Group members as below ##################################################################
+#### Shuo Li (s2795688), Zhe Zhu (s2841606), Antrea Filippou (s2766374) ######################
+#### Contributions as below ##################################################################
 #### Shuo Li: single word token selection at random, function to simulate a sentence (33%) ###
-#### Zhe Zhu: text pre-processing, create common words vector (34%) ######
+#### Zhe Zhu: text pre-processing, create common words vector (34%) ##########################
 #### Antrea Filippou: make the matrices of common word token sequences, next.word function (33%) ###
-##########################################################################
+##############################################################################################
 
 # setwd("/Users/apple/Desktop") # comment out of submitted
 a <- scan("shakespeare.txt",what="character",skip=83,nlines=196043-83,
@@ -289,6 +289,7 @@ run_models <- function(M1, b, start_word, m_values=c(3,4,5)) {
 
 # Run the model for m = 3, 4, 5
 run_models(M1, b, start_word, m_values=c(3,4,5))
+
 
 
 
