@@ -3,9 +3,9 @@
 #### Group members as below ################################
 #### Shuo Li (s2795688), Zhe Zhu (s2841606), Antrea Filippou (s2766374)
 #### Contributions as below ################################
-#### Shuo Li: xx (xx%) ###
-#### Zhe Zhu: xx (xx%) ###
-#### Antrea Filippou: xx (xx%) ###
+#### Shuo Li:  select a single word token (but not punctuation) at random,Function to simulate a sentence (33%) ###
+#### Zhe Zhu: pre-processing,create common words (34%) ###
+#### Antrea Filippou: make the matrices of common word token sequences,write next.word function (33%) ###
 ############################################################
 
 # setwd("/Users/apple/Desktop") # comment out of submitted
@@ -204,6 +204,7 @@ simulate_sentence <- function(M, M1, b, start_word, max_len=100, debug=FALSE) {
 ######## Generate a sentence ############################################
 cat("Step 9: simulate from the model →\n")
 cat(simulate_sentence(M, tokens, common, start_word=start_word, debug=TRUE), "\n")
+
 
 
 
