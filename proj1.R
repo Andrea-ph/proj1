@@ -287,8 +287,9 @@ run_models <- function(M1, b, start_word, m_values=c(3,4,5)) {
   }
 }
 
-# Run the model for m = 3, 4, 5 respectively
+# Run the model for Markov m = 3, 4, 5 respectively
 run_models(M1, b, start_word, m_values=c(3,4,5))
+
 
 
 
