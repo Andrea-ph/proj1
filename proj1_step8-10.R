@@ -20,16 +20,11 @@ cat("Step 8: randomly selected start word =", start_word, "\n\n")
 ##############################################
 simulate_sentence <- function(M, M1, b, start_word, 
                               min_clause_len=5, max_len=30, debug=FALSE) {
-  # Simulates a sentence given a Markov model context.
-  #
-  # Input arguments:
-  #   M              - context matrix of token sequences
-  #   M1             - numeric index vector of tokens
-  #   b              - vocabulary of common tokens
-  #   start_word     - first word of the sentence
-  #   min_clause_len - minimum number of words of a sentence before punctuation
-  #   max_len        - maximum length of th whole sentence
-  #   debug          - if TRUE, prints intermediate tokens for debugging
+  ## Simulates a sentence given a Markov model context.
+  ##   b              - vocabulary of common tokens
+  ##   min_clause_len - minimum number of words of a sentence before punctuation
+  ##   max_len        - maximum length of th whole sentence
+  ##   debug          - if TRUE, prints intermediate tokens for debugging
   
   # Convert the starting word into its index
   start_token <- match(start_word, b)
@@ -97,11 +92,6 @@ simulate_sentence <- function(M, M1, b, start_word,
 ##############################################
 run_models <- function(M1, b, start_word, m_values=c(3,4,5)) {
   # Prints the chosen starting word and simulates sentences for each m.
-  #
-  # Input arguments:
-  #   M1         - numeric index vector of tokens
-  #   b          - vocabulary of common tokens
-  #   start_word - the starting word chosen in Step 8
   #   m_values   - vector of Markov orders (default: 3,4,5)
   
   cat("Starting word:", start_word, "\n\n")  # Report the starting word once
@@ -127,3 +117,4 @@ run_models <- function(M1, b, start_word, m_values=c(3,4,5)) {
 
 # Run the model for m = 3, 4, 5
 run_models(M1, b, start_word, m_values=c(3,4,5))
+
