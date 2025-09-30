@@ -4,16 +4,16 @@
 #### Shuo Li (s2795688), Zhe Zhu (s2841606), Antrea Filippou (s2766374) ##
 #### Contributions as below ##############################################
 #### Shuo Li: single word token selection at random, function to simulate a sentence (33%) ###
-#### Zhe Zhu: text pre-processing, create common words vector (34%) ###
+#### Zhe Zhu: text pre-processing, create common words vector (34%) ######
 #### Antrea Filippou: make the matrices of common word token sequences, next.word function (33%) ###
-############################################################
+##########################################################################
 
 # setwd("/Users/apple/Desktop") # comment out of submitted
 a <- scan("shakespeare.txt",what="character",skip=83,nlines=196043-83,
           fileEncoding="UTF-8")
 cat("token numbers:", length(a), "\n")
 
-########## Step 4 Pre-processing #############################
+########## Step 4 Pre-processing #########################################
 ## (a) To remove the stage directions within "[]"
 ### Note: some unmatched brackets exist
 left_brackets <- grep("\\[", a) # Find the position of the token containing the left bracket "["
@@ -59,7 +59,7 @@ cat("After removing “_” and “-”, the remaining tokens:", length(a), "\n"
 split_punct <- function(words,
                              punct = c(",", "\\.", ";", "!", ":", "\\?")) {
   punct_regular <- paste(punct, collapse = "|")
-  regular <- paste0("(", punct_regular, ")")   # 
+  regular <- paste0("(", punct_regular, ")")   
   
   index <- grep(punct_regular, words)
   
@@ -69,7 +69,7 @@ split_punct <- function(words,
   
   parts <- strsplit(words, "\\s+")
   out <- unlist(parts, use.names = FALSE)
-  out <- out[out != ""]   # 
+  out <- out[out != ""]   
   
   punct_check <- c(",", ".", ";", "!", ":", "?")
   for (p in punct_check) {
@@ -80,71 +80,70 @@ split_punct <- function(words,
 }
 
 ## (e) To separate the punctuation marks）
-a <- split_punct(a)                  ##Implement the tokenization process: separate punctuation from words to ensure symbols (e.g., ".", ",", "!") are regarded as distinct tokens. 
-cat("Step 4d:  token  =", length(a)) ##Diagnostic validation of the token count following punctuation separation
+a <- split_punct(a)                  ## Implement the tokenization process: separate punctuation from words to ensure symbols (e.g., ".", ",", "!") are regarded as distinct tokens. 
+cat("Step 4d: number of tokens:", length(a)) 
 
 ## (f) convert the cleaned word vector a to lower case
-a <- tolower(a)                                    ##All tokens are converted to lowercase so that the Markov model processes the text in a case-insensitive manner and treats semantically identical forms (e.g. "Romeo" and "romeo") as a single token.
-cat("Step 4e: head 20 words =", head(a, 20), "\n") ##The command prints the first 20 tokens to the Console after conversion to lowercase, acting as a diagnostic check to verify correct normalization before starting Step 5.
+a <- tolower(a)                                    ## All tokens are converted to lowercase so that the Markov model processes the text in a case-insensitive manner and treats semantically identical forms (e.g. "Romeo" and "romeo") as a single token.
+cat("Step 4e: head 20 words: ", head(a, 20), "\n") 
 
-############### Step 5 ########################################
+############### Step 5 #################################################
 ## (a) To find the vector of unique words in the cleaned text a.
-b <- unique(a)                   ##The vocabulary of the text is defined by extracting the vector of unique tokens via the unique() function
-length(b)                        ##The number of unique tokens is determined by the length(b) command, which gives a numerical indication of the size of the vocabulary that will  be used in subsequent analysis.
+b <- unique(a)                   ## The vocabulary of the text is defined by extracting the vector of unique tokens via the unique() function
+length(b)                        ## The number of unique tokens is determined by the length(b) command, which gives a numerical indication of the size of the vocabulary that will  be used in subsequent analysis.
 
 ## (b) To find the vector of indices indicating which element in the unique word vector each element in the text corresponds to
-indices <- match(a, b)           ##Generates a numerical representation of the text by matching each token to its location in the vocabulary b. Crucial first step in developing the Markov model.    
+indices <- match(a, b)           ## Generates a numerical representation of the text by matching each token to its location in the vocabulary b. Crucial first step in developing the Markov model.    
 indices       
 
 ## (c) To count up how many times each unique word occurs in the text
 word_counts <- tabulate(indices) ## The tabulate(indices) command calculates the frequency distribution of the vocabulary,counting how many times each unique token appears in the text.The result is stored in the vector word_counts, which is the empirical basis for identifying the most common tokens. 
-word_counts                      ##Printing word_counts provides an immediate visualization of the distribution and acts as a diagnostic check before moving on to the next step.
+word_counts                    
 
 ## (d) To find top 1000 common words
 top_1000_indices <- order(word_counts, decreasing = TRUE)[1:1000]## Identifies the indices of the 1000 most frequent tokens by sorting the frequencies in descending order.
 b <- b[top_1000_indices]                                         ## Keeps only the 1000 most common tokens, defining the basic vocabulary for the Markov model.
 print(b)                                                         ## Displays the final set of most frequent tokens.
 
-###### Step 6 To make the matrices of common word token sequences ###
+###### Step 6 To make the matrices of common word token sequences ######
 ## (a) If a word is not in b, then match gives an NA for that word.
 M1 <- match(a, b)   ## Each token of the text is mapped to its position in the vocabulary b.
-                    ##Tokens that are not in the vocabulary (except top-1000) are given the value NA.
+                    ## Tokens that are not in the vocabulary (except top-1000) are given the value NA.
                     ## This creates a numeric vector that represents the entire text.
-length(M1)          ##Checks that the length of vector M1 equals the number of tokens in the text.
-head(M1, 100)       ##Preview the first 100 elements to see if the mapping was done correctly (indicators + NA).
+length(M1)          ## Checks that the length of vector M1 equals the number of tokens in the text.
+head(M1, 100)      
 
 ## (b) Create an (n - mlag) × (mlag + 1) matrix, M
 ### Firstly, we use mlag equals to 4.
-mlag <- 4         ##The maximum history is set to 4 tokens.
-n <- length(M1)   ##Total number of tokens in the text.
-print(n)          ##Display the number of tokens for verification.
-nrows <- n - mlag ##Calculating the number of lines for sequences of length mlag+1
+mlag <- 4         ## The maximum lag considered
+n <- length(M1)   
+print(n)         
+nrows <- n - mlag 
 
-M <- matrix(NA, nrow = nrows, ncol = mlag + 1)  ##Initialize a matrix with dimensions (n ​​- mlag) × (mlag + 1).
+M <- matrix(NA, nrow = nrows, ncol = mlag + 1)  ## Initialize a matrix with dimensions (n ​​- mlag) × (mlag + 1).
 for (j in 1:(mlag + 1)) {
-  M[, j] <- M1[j:(j + nrows - 1)]              ##Each column corresponds to a shifted version of M1.Each line contains a sequence of mlag+1 tokens.
+  M[, j] <- M1[j:(j + nrows - 1)]              ## Each column corresponds to a shifted version of M1.Each line contains a sequence of mlag+1 tokens.
 }
-print(M[1:10,])                                ##Display the first 10 lines for review
+print(M[1:10,])                                ## Display the first 10 lines for review
 
 M <- M[!is.na(M[, mlag + 1]), , drop = FALSE]  ## Remove lines with NA in the last token
-dim(M)                                         ## Returns the final dimensions of the matrix.
+dim(M)                                         
 
 ######## Step 7 Write a function ############################
-##
 next.word <- function(key, M, M1, w = rep(1, ncol(M) - 1)) {
   m <- ncol(M) - 1                         ## Defines the maximum Markov order from the structure of M.
   
-  if (length(key) > m) key <- tail(key, m) ##Limits the context to the last m tokens if it is larger.
+  if (length(key) > m) key <- tail(key, m) ## Limits the context to the last m tokens if it is larger.
   
-  alternative <- integer(0)               ##Gathers the candidate "next" tokens.
-  prob <- numeric(0)                      ##And the corresponding sampling weights from the mixture.
+  alternative <- integer(0)               ## Gathers the candidate "next" tokens.
+  prob <- numeric(0)                      ## And the corresponding sampling weights from the mixture.
   
-  L <- length(key)                        ##Current length of the available context.
+  L <- length(key)                        ## Current length of the available context.
   
   for (s in seq_len(L)) {
-    sub <- key[s:L]                      ##Defines the subsequence (context) that will be compared to the columns of matrix M.
+    sub <- key[s:L]                      ## Defines the subsequence (context) that will be compared to the columns of matrix M.
     r <- length(sub)
-    mc <- m - r + 1                      ##Calculates the starting column in M ​​so that the sub is correctly aligned with the last r columns.
+    mc <- m - r + 1                      ## Calculates the starting column in M ​​so that the sub is correctly aligned with the last r columns.
     
     ii <- colSums(!(t(M[, mc:m, drop = FALSE]) == sub))
     match <- which(ii == 0 & is.finite(ii))
@@ -162,7 +161,7 @@ next.word <- function(key, M, M1, w = rep(1, ncol(M) - 1)) {
   }
   
   if (length(alternative) == 0) {
-    m1 <- M1[!is.na(M1)]#non na
+    m1 <- M1[!is.na(M1)] # non na
     frequence_b <- tabulate(m1, nbins = max(M1, na.rm = TRUE))
     return(sample(seq_along(frequence_b), 1, prob = frequence_b))
   }
@@ -171,16 +170,16 @@ next.word <- function(key, M, M1, w = rep(1, ncol(M) - 1)) {
   return(alternative[select_position])
 }
 
-##############################################
-# Step 8. Select a single word token at random (no punctuation)
-##############################################
+####################################################################
+### Step 8. Select a single word token at random (no punctuation) ##
+####################################################################
 punct_chars <- c(",", ".", ";", "!", ":", "?", "-", "—", "_")  
 # Define punctuation characters not used as start words.
 
 non_punct_indices <- which(!(b %in% punct_chars) & grepl("^[a-z]+$", b))  
 # Candidate start words are determined as:
-#   - not in the punctuation set
-#   - must be alphabetic only (regex "^[a-z]+$")
+#  not in the punctuation set
+#  must be alphabetic only (regex "^[a-z]+$")
 
 start_token <- sample(non_punct_indices, 1)  # Randomly select a valid index
 start_word <- b[start_token]                 # Convert index to actual word
@@ -188,16 +187,16 @@ start_word <- b[start_token]                 # Convert index to actual word
 cat("Step 8: randomly selected start word =", start_word, "\n\n")
 
 
-##############################################
-# Step 9. Function to simulate a sentence
-##############################################
+##################################################################
+###### Step 9. Function to simulate a sentence ###################
+##################################################################
 simulate_sentence <- function(M, M1, b, start_word, 
                               min_clause_len=5, max_len=30, debug=FALSE) {
   ## Simulates a sentence given a Markov model context.
-  ##   b              - vocabulary of common tokens
-  ##   min_clause_len - minimum number of words of a sentence before punctuation
-  ##   max_len        - maximum length of th whole sentence
-  ##   debug          - if TRUE, prints intermediate tokens for debugging
+  ##   b               vocabulary of common tokens
+  ##   min_clause_len  minimum number of words of a sentence before punctuation
+  ##   max_len         maximum length of th whole sentence
+  ##   debug           if TRUE, prints intermediate tokens for debugging
   
   # Convert the starting word into its index
   start_token <- match(start_word, b)
@@ -290,5 +289,6 @@ run_models <- function(M1, b, start_word, m_values=c(3,4,5)) {
 
 # Run the model for m = 3, 4, 5
 run_models(M1, b, start_word, m_values=c(3,4,5))
+
 
 
