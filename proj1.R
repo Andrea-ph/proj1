@@ -68,7 +68,7 @@ split_punct <- function(words,
   }
   
   parts <- strsplit(words, "\\s+") # use blank characters to split words.
-  out <- unlist(parts, use.names = FALSE)
+  out <- unlist(parts, use.names = FALSE) # convert list into vector
   out <- out[out != ""]   
   
   punct_check <- c(",", ".", ";", "!", ":", "?")
@@ -289,6 +289,7 @@ run_models <- function(M1, b, start_word, m_values=c(3,4,5)) {
 
 # Run the model for m = 3, 4, 5 respectively
 run_models(M1, b, start_word, m_values=c(3,4,5))
+
 
 
 
