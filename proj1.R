@@ -11,7 +11,7 @@
 # setwd("/Users/apple/Desktop") # comment out of submitted
 a <- scan("shakespeare.txt",what="character",skip=83,nlines=196043-83,
           fileEncoding="UTF-8")
-cat("token numbers:", length(a), "\n")
+cat("number of tokens:", length(a), "\n")
 
 ########## Step 4 Pre-processing #########################################
 ## (a) To remove the stage directions within "[]"
@@ -289,6 +289,7 @@ run_models <- function(M1, b, start_word, m_values=c(3,4,5)) {
 
 # Run the model for m = 3, 4, 5
 run_models(M1, b, start_word, m_values=c(3,4,5))
+
 
 
 
