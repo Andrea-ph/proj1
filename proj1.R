@@ -58,16 +58,16 @@ cat("After removing “_” and “-”, the remaining tokens:", length(a), "\n"
 ## (d) Define split_punct function, Convert punctuation marks into independent tokens
 split_punct <- function(words,
                              punct = c(",", "\\.", ";", "!", ":", "\\?")) {
-  punct_regular <- paste(punct, collapse = "|")
+  punct_regular <- paste(punct, collapse = "|") # regular expression
   regular <- paste0("(", punct_regular, ")")   
   
-  index <- grep(punct_regular, words)
+  index <- grep(punct_regular, words) # Find the index of the element in words that contains punctuation marks
   
   if (length(index) > 0) {
     words[index] <- gsub(regular, " \\1 ", words[index])
   }
   
-  parts <- strsplit(words, "\\s+")
+  parts <- strsplit(words, "\\s+") # use blank characters to split words.
   out <- unlist(parts, use.names = FALSE)
   out <- out[out != ""]   
   
@@ -90,7 +90,7 @@ cat("Step 4e: head 20 words: ", head(a, 20), "\n")
 ############### Step 5 #################################################
 ## (a) To find the vector of unique words in the cleaned text a.
 b <- unique(a)                   ## The vocabulary of the text is defined by extracting the vector of unique tokens via the unique() function
-length(b)                        ## The number of unique tokens is determined by the length(b) command, which gives a numerical indication of the size of the vocabulary that will  be used in subsequent analysis.
+length(b)                        ## The number of unique tokens
 
 ## (b) To find the vector of indices indicating which element in the unique word vector each element in the text corresponds to
 indices <- match(a, b)           ## Generates a numerical representation of the text by matching each token to its location in the vocabulary b. Crucial first step in developing the Markov model.    
@@ -102,8 +102,8 @@ word_counts
 
 ## (d) To find top 1000 common words
 top_1000_indices <- order(word_counts, decreasing = TRUE)[1:1000]## Identifies the indices of the 1000 most frequent tokens by sorting the frequencies in descending order.
-b <- b[top_1000_indices]                                         ## Keeps only the 1000 most common tokens, defining the basic vocabulary for the Markov model.
-print(b)                                                         ## Displays the final set of most frequent tokens.
+b <- b[top_1000_indices]            ## Keeps only the 1000 most common tokens, defining the basic vocabulary for the Markov model.
+print(b)                              
 
 ###### Step 6 To make the matrices of common word token sequences ######
 ## (a) If a word is not in b, then match gives an NA for that word.
@@ -289,6 +289,7 @@ run_models <- function(M1, b, start_word, m_values=c(3,4,5)) {
 
 # Run the model for m = 3, 4, 5 respectively
 run_models(M1, b, start_word, m_values=c(3,4,5))
+
 
 
 
