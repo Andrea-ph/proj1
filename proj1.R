@@ -23,7 +23,7 @@ a <- scan("shakespeare.txt",what="character",skip=83,nlines=196043-83,
 cat("number of tokens:", length(a), "\n")
 
 ####################################################################
-########## Step 4 Pre-processing ###################################
+########## Pre-processing ##########################################
 ####################################################################
 ## (a) To remove the stage directions within "[]"
 ### Note: some unmatched brackets exist
@@ -98,9 +98,9 @@ cat("Step 4d: number of tokens:", length(a))
 a <- tolower(a)                                    ## All tokens are converted to lowercase so that the Markov model processes the text in a case-insensitive manner and treats semantically identical forms (e.g. "Romeo" and "romeo") as a single token.
 cat("Step 4e: head 20 words: ", head(a, 20), "\n") 
 
-####################################################################
-############### Step 5 #############################################
-####################################################################
+#######################################################
+### Create common word vectors ########################
+#######################################################
 ## (a) To find the vector of unique words in the cleaned text a.
 b <- unique(a)                   ## The vocabulary of the text is defined by extracting the vector of unique tokens via the unique() function
 length(b)                        ## The number of unique tokens
@@ -119,7 +119,7 @@ b <- b[top_1000_indices]            ## Keeps only the 1000 most common tokens, d
 print(b)                              
 
 ########################################################################
-###### Step 6 To make the matrices of common word token sequences ######
+############# To make the matrices of common word token sequences ######
 ########################################################################
 ## (a) If a word is not in b, then match gives an NA for that word.
 M1 <- match(a, b)   ## Each token of the text is mapped to its position in the vocabulary b.
@@ -145,7 +145,7 @@ M <- M[!is.na(M[, mlag + 1]), , drop = FALSE]  ## Remove lines with NA in the la
 dim(M)                                         
 
 #############################################################
-######## Step 7 Write a function ############################
+############### Write a function ############################
 #############################################################
 next.word <- function(key, M, M1, w = rep(1, ncol(M) - 1)) {
   m <- ncol(M) - 1                         ## Defines the maximum Markov order from the structure of M.
@@ -187,9 +187,9 @@ next.word <- function(key, M, M1, w = rep(1, ncol(M) - 1)) {
   return(alternative[select_position])
 }
 
-####################################################################
-### Step 8. Select a single word token at random (no punctuation) ##
-####################################################################
+############################################################
+### Select a single word token at random (no punctuation) ##
+############################################################
 punct_chars <- c(",", ".", ";", "!", ":", "?", "-", "—", "_")  
 # Define punctuation characters not used as start words.
 
@@ -205,7 +205,7 @@ cat("Step 8: randomly selected start word =", start_word, "\n\n")
 
 
 ##################################################################
-###### Step 9. Function to simulate a sentence ###################
+############## Function to simulate a sentence ###################
 ##################################################################
 simulate_sentence <- function(M, M1, b, start_word, 
                               min_clause_len=5, max_len=30, debug=FALSE) {
@@ -304,8 +304,11 @@ run_models <- function(M1, b, start_word, m_values=c(3,4,5)) {
   }
 }
 
-# Run the model for Markov m = 3, 4, 5 respectively
+#######################################################
+## Run the model for Markov m = 3, 4, 5 respectively ##
+#######################################################
 run_models(M1, b, start_word, m_values=c(3,4,5))
+
 
 
 
