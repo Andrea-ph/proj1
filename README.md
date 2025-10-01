@@ -1,4 +1,4 @@
-# Shakespeare Text Generation using Markov Chains  
+# Shakespeare Sentence Generation using Markov Chains  
 
 Group Information  
 
