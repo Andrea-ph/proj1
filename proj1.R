@@ -8,14 +8,15 @@
 #### Antrea Filippou: make the matrices of common word token sequences, next.word function (33%) ###
 ##############################################################################################
 
-##Introduction  
-##This project implements a text generation model using Markov Chains on Shakespeare’s Complete Works.  
-##The main objectives are:  
-##1. Pre-process Shakespeare's text to remove irrelevant symbols and standardize tokens.  
-##2. Build a vocabulary of the most frequent words.  
-##3. Implement a Markov Chain–based model to predict the next word.  
-##4. Generate sentences using different Markov orders (m = 3, 4, 5) and compare the outputs. 
+# Introduction  
+## This project implements a text generation model using Markov Chains on Shakespeare’s Complete Works.  
+## The main objectives are:  
+## 1. Pre-process Shakespeare's text to remove irrelevant symbols and standardize tokens.  
+## 2. Build a vocabulary of the most frequent words.  
+## 3. Implement a Markov Chain–based model to predict the next word.  
+## 4. Generate sentences using different Markov orders (m = 3, 4, 5) and compare the outputs. 
 
+####################################################################
 # setwd("/Users/apple/Desktop") # comment out of submitted
 a <- scan("shakespeare.txt",what="character",skip=83,nlines=196043-83,
           fileEncoding="UTF-8")
@@ -305,6 +306,7 @@ run_models <- function(M1, b, start_word, m_values=c(3,4,5)) {
 
 # Run the model for Markov m = 3, 4, 5 respectively
 run_models(M1, b, start_word, m_values=c(3,4,5))
+
 
 
 
