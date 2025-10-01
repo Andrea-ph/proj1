@@ -54,7 +54,7 @@ cat("After removing uppercase and numbers, number of remaining tokens:", length(
 
 ## (c) To remove “_” and “-”
 a <- gsub("_|-", "", a)
-cat("After removing “_” and “-”, the remaining tokens:", length(a), "\n" )
+cat("After removing “_” and “-”, the number of remaining tokens:", length(a), "\n" )
 
 
 ## (d) Define split_punct function, Convert punctuation marks into independent tokens
@@ -297,6 +297,7 @@ run_models <- function(M1, b, start_word, m_values=c(3,4,5)) {
 
 # Run the model for Markov m = 3, 4, 5 respectively
 run_models(M1, b, start_word, m_values=c(3,4,5))
+
 
 
 
