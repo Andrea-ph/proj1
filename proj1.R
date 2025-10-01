@@ -13,7 +13,9 @@ a <- scan("shakespeare.txt",what="character",skip=83,nlines=196043-83,
           fileEncoding="UTF-8")
 cat("number of tokens:", length(a), "\n")
 
-########## Step 4 Pre-processing #########################################
+####################################################################
+########## Step 4 Pre-processing ###################################
+####################################################################
 ## (a) To remove the stage directions within "[]"
 ### Note: some unmatched brackets exist
 left_brackets <- grep("\\[", a) # Find the position of the token containing the left bracket "["
@@ -87,7 +89,9 @@ cat("Step 4d: number of tokens:", length(a))
 a <- tolower(a)                                    ## All tokens are converted to lowercase so that the Markov model processes the text in a case-insensitive manner and treats semantically identical forms (e.g. "Romeo" and "romeo") as a single token.
 cat("Step 4e: head 20 words: ", head(a, 20), "\n") 
 
-############### Step 5 #################################################
+####################################################################
+############### Step 5 #############################################
+####################################################################
 ## (a) To find the vector of unique words in the cleaned text a.
 b <- unique(a)                   ## The vocabulary of the text is defined by extracting the vector of unique tokens via the unique() function
 length(b)                        ## The number of unique tokens
@@ -105,7 +109,9 @@ top_1000_indices <- order(word_counts, decreasing = TRUE)[1:1000]## Identifies t
 b <- b[top_1000_indices]            ## Keeps only the 1000 most common tokens, defining the basic vocabulary for the Markov model.
 print(b)                              
 
+########################################################################
 ###### Step 6 To make the matrices of common word token sequences ######
+########################################################################
 ## (a) If a word is not in b, then match gives an NA for that word.
 M1 <- match(a, b)   ## Each token of the text is mapped to its position in the vocabulary b.
                     ## Tokens that are not in the vocabulary (except top-1000) are given the value NA.
@@ -129,7 +135,9 @@ print(M[1:10,])                                ## Display the first 10 lines for
 M <- M[!is.na(M[, mlag + 1]), , drop = FALSE]  ## Remove lines with NA in the last token
 dim(M)                                         
 
+#############################################################
 ######## Step 7 Write a function ############################
+#############################################################
 next.word <- function(key, M, M1, w = rep(1, ncol(M) - 1)) {
   m <- ncol(M) - 1                         ## Defines the maximum Markov order from the structure of M.
   
@@ -289,6 +297,7 @@ run_models <- function(M1, b, start_word, m_values=c(3,4,5)) {
 
 # Run the model for Markov m = 3, 4, 5 respectively
 run_models(M1, b, start_word, m_values=c(3,4,5))
+
 
 
 
