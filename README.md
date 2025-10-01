@@ -8,9 +8,9 @@
   - Antrea Filippou (s2766374)  
 
 - **Contributions**:  
-  - Shuo Li: xx% (xx)  
-  - Zhe Zhu: xx% (xx)  
-  - Antrea Filippou: xx% (xx)  
+  - Shuo Li: single word token selection at random, function to simulate a sentence (33%)
+  - Zhe Zhu: text pre-processing, create common words vector (34%)
+  - Antrea Filippou: make the matrices of common word token sequences, next.word function (33%)
 
 ---
 
