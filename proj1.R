@@ -90,11 +90,11 @@ split_punct <- function(words,
   return(out)
 }
 
-## (e) To separate the punctuation marks）
+## (e) Separate punctuation as independent tokens
 a <- split_punct(a)                  ## Implement the tokenization process: separate punctuation from words to ensure symbols (e.g., ".", ",", "!") are regarded as distinct tokens. 
 cat("Step 4d: number of tokens:", length(a)) 
 
-## (f) convert the cleaned word vector a to lower case
+## (f) Lowercase normalisation: convert the cleaned word vector `a` to lowercase
 a <- tolower(a)                                    ## All tokens are converted to lowercase so that the Markov model processes the text in a case-insensitive manner and treats semantically identical forms (e.g. "Romeo" and "romeo") as a single token.
 cat("Step 4e: head 20 words: ", head(a, 20), "\n") 
 
@@ -113,9 +113,9 @@ indices
 word_counts <- tabulate(indices) ## The tabulate(indices) command calculates the frequency distribution of the vocabulary,counting how many times each unique token appears in the text.The result is stored in the vector word_counts, which is the empirical basis for identifying the most common tokens. 
 word_counts                    
 
-## (d) To find top 1000 common words
+## (d)Identified the top 1000 most frequent tokens  to ensure the vocabulary obtains the most common words.
 top_1000_indices <- order(word_counts, decreasing = TRUE)[1:1000]## Identifies the indices of the 1000 most frequent tokens by sorting the frequencies in descending order.
-b <- b[top_1000_indices]            ## Keeps only the 1000 most common tokens, defining the basic vocabulary for the Markov model.
+b <- b[top_1000_indices]                                         ## Keeps only the 1000 most common tokens, defining the basic vocabulary for the Markov model.
 print(b)                              
 
 ########################################################################
@@ -163,7 +163,7 @@ next.word <- function(key, M, M1, w = rep(1, ncol(M) - 1)) {
     mc <- m - r + 1                      ## Calculates the starting column in M ​​so that the sub is correctly aligned with the last r columns.
     
     ii <- colSums(!(t(M[, mc:m, drop = FALSE]) == sub))
-    match <- which(ii == 0 & is.finite(ii))
+    match <- which(ii == 0 & is.finite(ii)) ##rows in which the final r columns precisely match the context sub.
     
     if (length(match) > 0) {
       u <- M[match, m + 1]
@@ -172,7 +172,7 @@ next.word <- function(key, M, M1, w = rep(1, ncol(M) - 1)) {
       if (nu > 0) {
         weight <- w[mc]            
         alternative <- c(alternative, u)
-        prob <- c(prob, rep(weight / nu, nu))
+        prob <- c(prob, rep(weight / nu, nu)) ## equally distributes the class weight among the nu observed continuations.
       }
     }
   }
@@ -198,7 +198,8 @@ non_punct_indices <- which(!(b %in% punct_chars) & grepl("^[a-z]+$", b))
 #  not in the punctuation set
 #  must be alphabetic only (regex "^[a-z]+$")
 
-start_token <- sample(non_punct_indices, 1)  # Randomly select a valid index
+start_token <- sample(non_punct_indices, 1)  ### Randomly select a non-punctuation token as the initial word used to generate sentences
+
 start_word <- b[start_token]                 # Convert index to actual word
 
 cat("Step 8: randomly selected start word =", start_word, "\n\n")
@@ -308,6 +309,7 @@ run_models <- function(M1, b, start_word, m_values=c(3,4,5)) {
 ## Run the model for Markov m = 3, 4, 5 respectively ##
 #######################################################
 run_models(M1, b, start_word, m_values=c(3,4,5))
+
 
 
 
