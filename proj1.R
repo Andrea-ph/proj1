@@ -145,7 +145,7 @@ M <- M[!is.na(M[, mlag + 1]), , drop = FALSE]  ## Remove lines with NA in the la
 dim(M)                                         
 
 #############################################################
-############### Write a function ############################
+############### Construct a next-word function ##############
 #############################################################
 next.word <- function(key, M, M1, w = rep(1, ncol(M) - 1)) {
   m <- ncol(M) - 1                         ## Defines the maximum Markov order from the structure of M.
@@ -308,6 +308,7 @@ run_models <- function(M1, b, start_word, m_values=c(3,4,5)) {
 ## Run the model for Markov m = 3, 4, 5 respectively ##
 #######################################################
 run_models(M1, b, start_word, m_values=c(3,4,5))
+
 
 
 
