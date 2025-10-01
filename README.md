@@ -1,6 +1,5 @@
 # Shakespeare Sentence Generation using Markov Chains  
 
-Group Information  
 
 Course: Extended Statistical Programming (Proj1 – Group 33)  
 Group Members
