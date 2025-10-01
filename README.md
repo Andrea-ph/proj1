@@ -1,6 +1,7 @@
 # Shakespeare Text Generation using Markov Chains  
 
 ## Group Information  
+
 Course: Extended Statistical Programming (Proj1 – Group 33)  
 Group Members
 Shuo Li (s2795688)  
@@ -8,8 +9,11 @@ Zhe Zhu (s2841606)
 Antrea Filippou (s2766374)  
 
 Contributions
+
 Shuo Li: single word token selection at random, function to simulate a sentence (33%)
+
 Zhe Zhu: text pre-processing, create common words vector (34%)
+
 Antrea Filippou: make the matrices of common word token sequences, next.word function (33%)
 
 
