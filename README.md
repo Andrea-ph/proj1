@@ -1,6 +1,6 @@
 # Shakespeare Text Generation using Markov Chains  
 
-## Group Information  
+Group Information  
 
 Course: Extended Statistical Programming (Proj1 – Group 33)  
 Group Members
@@ -18,7 +18,7 @@ Antrea Filippou: make the matrices of common word token sequences, next.word fun
 
 
 
-## Introduction  
+Introduction  
 This project implements a text generation model using Markov Chains on Shakespeare’s Complete Works.  
 The main objectives are:  
 
@@ -29,43 +29,43 @@ The main objectives are:
 
 
 
-## Files in Submission  
+Files in Submission  
 proj1.R – main R script (pre-processing, model building, simulation).  
 shakespeare.txt – input dataset.  
 README.md – documentation.  
 
 
 
-## Implementation Steps  
+Implementation Steps  
 
-### Step 4 – Pre-processing  
+Step 4 – Pre-processing  
 Remove stage directions '[ ... ]'.  
 Remove fully uppercase words (character names, headings) and Arabic numerals.  
 Remove '_' and '-'.  
 Separate punctuation marks into independent tokens.  
 Convert all tokens to lowercase.  
 
-### Step 5 – Vocabulary  
+Step 5 – Vocabulary  
 Build a vocabulary of unique words.  
 Keep the **top 1000 most frequent words**.  
 
-### Step 6 – Token Sequences  
+Step 6 – Token Sequences  
 Map tokens to vocabulary indices.  
 Build an (n – mlag) × (mlag + 1) matrix M.  
 
-### Step 7 – Next Word Function  
+Step 7 – Next Word Function  
 Implement next.word() to sample the next token based on context.  
 
-### Step 8 – Random Start Word  
+Step 8 – Random Start Word  
 Select a random starting word (no punctuation).  
 
-### Step 9 – Sentence Simulation  
+Step 9 – Sentence Simulation  
 Generate sentences with constraints:  
 Each clause ≥ 5 words before punctuation.  
 Sentence length ≤ 30 words.  
 Ensure sentences end with ".".  
 
-### Step 10 – Running Models  
+Step 10 – Running Models  
 Run simulations with Markov orders m = 3, 4, 5.  
 Compare outputs for fluency and coherence.  
 
